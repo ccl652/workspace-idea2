@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table id="search-tab"></table>
+<div id="add-div"></div>
+<script type="text/javascript">
+
+
+
+    function searchUser(){
+        $('#search-tab').datagrid({
+            url:'../queryUserList',
+            rownumbers:true,
+            columns:[
+                [
+                {field:'userid',title:'用户id',width:100},
+                {field:'username',title:'用户名称',width:100},
+                {field:'action',
+                    formatter:function(val,row,index){
+                        var but = "<input type='button' onclick='toGetRole("+row.userid+",\""+row.username+"\")' value='设置角色'>";
+                        return but;
+                    }
+                }
+            ]
+            ]
+
+        });
+    }
+
+    $(function(){
+        searchUser();
+    })
+
+    function toGetRole(userid,username){
+        $('#add-div').dialog({
+            title: '设置'+username+'的角色',
+            width: 400,
+            height: 400,
+            href: '../toGetRole?userid='+userid,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    //用户名和角色名
+                    var arr = $("[name='ck']:checked");
+                    //alert(arr.length)
+                    var rids = "";
+                    for (var i = 0; i < arr.length; i++) {
+                        rids += ","+arr[i].value;
+                    }
+                    rids = rids.substring(1);
+                    $.ajax({
+                        url:"../toSetRole?rids="+rids,
+                        type:"post",
+                        success:function(msg){
+                            if(msg>0){
+                                $.messager.show({
+                                    title:'消息提示：',
+                                    msg:"已成功设置角色",
+                                    timeout:2000,
+                                    showType:'slide'
+                                });
+                                $('#search-tab').datagrid("reload");
+                                $('#add-div').dialog("close");
+                            }
+                        }
+                    })
+                }
+            },{
+                text:'关闭',
+                handler:function(){
+                    $('#add-div').dialog("close");
+                }
+            }]
+        });
+    }
+
+</script>
+</body>
+</html>

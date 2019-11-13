@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.mapper.RoleMapper" >
+
+<select id="selectRoleList" resultType="com.jk.model.Roles">
+    select * from t_role
+</select>
+
+    <select id="selectUserRoleByUserid" resultType="java.lang.Integer">
+    select zrid from t_user_role
+    where zuid = #{uid}
+  </select>
+
+    <delete id="deleteUserRole">
+      delete from t_user_role
+      where zuid = #{uid}
+    </delete>
+
+    <insert id="addUserRole">
+        insert into t_user_role (zuid, zrid)
+        values
+        <foreach item="rid" index="index" collection="rids" separator=",">
+            (#{uid},${rid})
+        </foreach>
+    </insert>
+
+
+</mapper>

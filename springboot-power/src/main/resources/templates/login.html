@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!-- 引入EasyUI的样式文件-->
+    <link rel="stylesheet" href="../js/easyui/themes/default/easyui.css" type="text/css"/>
+    <!-- 引入EasyUI的图标样式文件-->
+    <link rel="stylesheet" href="../js/easyui/themes/icon.css" type="text/css"/>
+    <!-- 引入JQuery -->
+    <script type="text/javascript" src="../js/easyui/jquery.min.js"></script>
+    <!-- 引入EasyUI -->
+    <script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+    <!-- 引入EasyUI的中文国际化js，让EasyUI支持中文 -->
+    <script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <!-- 引入EasyUI的生成树的插件 -->
+    <script type="text/javascript" src="../js/easyui/util-js.js"></script>
+</head>
+
+<body>
+<div id="login-div" class="easyui-dialog" title="登录" align="center" style="width:600px;height:400px"
+     data-options="modal:true,collapsible:false,minimizable:false,maximizable:false,
+        closable:false,draggable:false,resizable:false,
+        buttons:[{
+                	iconCls:'icon-ok',
+                	text:'登录',
+                    handler:function(){
+	                  $('#login-form').form('submit', {
+						    url:'../login',
+						    onSubmit: function(){
+						    //在该函数内进行表单验证
+						       return $('#login-form').form('validate');
+						    },
+						    success:function(msg){
+
+						    if(msg==1){
+						        alert('用户不存在');
+						        return;
+						    }
+						    if(msg==2){
+						        alert('密码不正确');
+						        return;
+						    }
+
+						      	if(msg == 3){
+						      	   alert('登录成功');
+						      		location.href='../toIndex';
+
+						      	}
+						    }
+					});
+                 }
+               }]">
+    <br>
+    <form id="login-form">
+        用户名：<input class="easyui-textbox" id="name-id" name="username" data-options="iconCls:'icon-man',required:true" style="width:200px">
+        <span id="name-span"></span>
+        <br><br>
+        密码：<input class="easyui-passwordbox" id="pwd-id" prompt="Password" name="pwd" data-options="iconCls:'icon-lock',required:true" iconWidth="28" style="width:200px">
+        <span id="pwd-span"></span><br>
+
+
+    </form>
+</div>
+
+<script type="text/javascript">
+ $(function(){
+
+        $('#pwd-id').passwordbox({
+            prompt: 'Password',
+            showEye: true
+        });
+    })
+
+  /*  function selectUserByName(){
+        var uname = $('#name-id').textbox("getValue");
+        $.ajax({
+            url:"/user/selectUserByName?uname="+uname,
+            type:"post",
+            success:function(msg){
+                if(msg>0){
+                    $("#name-span").html("用户正确");
+                }else{
+                    $("#name-span").html("<font color='red'>"+"该用户不存在"+"</font>");
+                }
+            }
+        })
+
+    }
+
+*/
+</script>
+</body>
+</html>

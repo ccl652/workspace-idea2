@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"  >
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="edit-form" method="post">
+
+<tr th:each="r:${roleList}">
+    <td>
+        <input type="checkbox" th:checked="${r.checked}" name="ck" th:value="${r.rokid}">
+
+    </td>
+    <td th:text="${r.rokname}"></td>
+</tr>
+
+</form>
+</body>
+</html>

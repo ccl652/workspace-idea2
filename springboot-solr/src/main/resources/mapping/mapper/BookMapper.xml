@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.mapper.BookMapper" >
+
+<select id="queryBook" resultType="com.jk.model.Books">
+select * from t_book
+</select>
+
+    <insert id="saveBook">
+        <selectKey resultType="java.lang.Integer" keyProperty="bookid" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        insert into t_book(bookname,booktype,bookprice)
+        values(#{bookname},#{booktype},#{bookprice})
+    </insert>
+
+    <delete id="deleteBooks">
+        delete from t_book where bookid in (${ids})
+    </delete>
+
+    <delete id="deleteBook">
+        delete from t_book where bookid = #{id}
+    </delete>
+
+    <select id="selectBookById" resultType="com.jk.model.Books">
+       select * from t_book
+       where bookid = #{id}
+    </select>
+
+    <update id="updateBook">
+       update t_book set
+        bookname=#{bookname},
+        booktype=#{booktype},
+        bookprice=#{bookprice}
+       where bookid = #{bookid}
+    </update>
+
+</mapper>

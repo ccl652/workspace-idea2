@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table id="search-tab3"></table>
+<script  type="text/javascript">
+    function searchPower(){
+        $('#search-tab3').datagrid({
+            url:'../queryPower',
+            rownumbers:true,
+            columns:[
+                [
+                {field:'id',title:'id',width:100},
+                {field:'text',title:'权限名称',width:100},
+                {field:'url',title:'路径',width:100},
+                {field:'ptext',title:'父级名称',width:100/* ,
+	        	formatter:function(val,row,index){
+	        		if(row.id==1){
+	        			return "";
+	        		}
+	        	} */
+                }
+            ]
+            ]
+
+        });
+    }
+
+    $(function(){
+        searchPower();
+    })
+
+</script>
+</body>
+</html>

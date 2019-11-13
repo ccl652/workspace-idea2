@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="edit-form" method="post">
+    <input type="hidden" name="bookid" th:value="${book.bookid}">
+    图书名字：<input th:value="${book.bookname}"  class="easyui-textbox" name="bookname"  style="width:200px"><br>
+    图书类型：<select name="booktype"  th:value=${book.booktype} class="easyui-combobox" style="width:200px;">
+    <option th:selected="${book.booktype==-1}"  value="-1">请选择</option>
+    <option th:selected="${book.booktype==1}"  value="1">言情</option>
+    <option th:selected="${book.booktype==2}" value="2">动作</option>
+    <option th:selected="${book.booktype==3}" value="3">穿越</option>
+</select><br>
+    图书价格：<input th:value="${book.bookprice}"  class="easyui-textbox" name="bookprice"  style="width:200px"><br>
+<!--    单选
+商品类型：<input type="radio" name="stype" value="电器" th:field="${sp.stype}">电器
+    <input type="radio" name="stype" value="食品" th:field="${sp.stype}">食品
+    <input type="radio" name="stype" value="水果" th:field="${sp.stype}">水果<br><br>-->
+
+</form>
+</body>
+</html>

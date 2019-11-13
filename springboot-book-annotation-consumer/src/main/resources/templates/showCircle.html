@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- 这是jquery的核心包  -->
+    <script type="text/javascript" src="../js/easyui/jquery.min.js"></script>
+    <script src="../highcharts/code/highcharts.js"></script>
+    <script src="../highcharts/code/modules/exporting.js"></script>
+    <script src="../highcharts/code/modules/export-data.js"></script>
+</head>
+<body>
+<div id="container" ></div>
+<div id="container-2019-m"></div>
+
+<script>
+    $(function () {
+        $.ajax({
+            url:"../queryBookCircle",
+            type:"post",
+            dataType:"json",
+            success:function (data) {
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: '书籍信息'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.y}</b> 本'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        colorByPoint: true,
+                        data: data
+                    }]
+                });
+            },error:function () {
+                alert("查询失败")
+            }
+        })
+    })
+
+    //1.使用饼状图展示2019年每一个月的销量
+
+    $(function () {
+        $.ajax({
+            url:"../queryBookCircleByYear",
+            type:"post",
+            dataType:"json",
+            success:function (data) {
+                Highcharts.chart('container-2019-m', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: '2019年每月书籍销售信息'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: "<b>{point.y}</b>{point.percentage:.1f}%"
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '每月销售占比',
+                        colorByPoint: true,
+                        data: data
+                    }]
+                });
+            },error:function () {
+                alert("查询失败")
+            }
+        })
+    })
+
+
+
+
+
+
+    /*
+
+      $(function () {
+          //获取后台数据
+          var x = [];//X轴
+          var y = [];//Y轴
+          var xtext = [];//X轴TEXT
+          var color = ["#FFB6C1","#DC143C","#C71585","#D8BFD8","#8B008B","#4B0082","#6A5ACD","#0000FF","#B0C4DE","#1E90FF","#00CED1","#228B22"];
+          $.ajax({
+              type:'post',
+              url:'../showShop',
+              success:function(data){
+                  var json = eval("("+data+")");//转换数据
+                  for(var key in json.rows){
+                      json.rows[key].y = json.rows[key].money; //给Y轴赋值
+                      xtext = json.rows[key].name;//给X轴TEXT赋值
+                      json.rows[key].color= color[key];
+                  }
+
+                  //新建图表
+                  chart = new Highcharts.Chart({
+                      chart: {
+                          renderTo: 'container',           //图表放置的容器，关联DIV#id
+                          type: 'column',                    //柱状图
+                          reflow:true                    //自适应div的大小
+                      },
+                      title: {
+                          text: '分类采购额'            //图表标题
+                      },
+                      xAxis: {                            //X轴标签
+                          categories:[xtext]
+                      },
+                      yAxis: {                            //设置Y轴
+                          title: {
+                              text: '采购额 (元)'
+                          }
+                      },
+                      credits:{                          //右下角文本不显示
+                          enabled: false
+                      },
+                      tooltip:{                        //鼠标移动到图形上时显示的提示框
+                          headerFormat: '{series.name}：<span style="font-size:12px"><b>{point.key}</b></span><table>',
+                          pointFormat: '<tr><td>采购额： </td>' +
+                              '<td style="padding:0"><b>{point.y:.1f} ￥</b></td></tr>',
+                          footerFormat: '</table>',
+                          shared: true,
+                          useHTML: true
+
+                      },
+                      series:[{
+                          name:"商品类别"
+
+                      }]
+                  }),
+                      chart.series[0].setData(json.rows);//数据填充到highcharts上面
+              },
+          error:function(e){
+          }
+
+      });
+      });
+
+    */
+
+
+</script>
+</body>
+</html>

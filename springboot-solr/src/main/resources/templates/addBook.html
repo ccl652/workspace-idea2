@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="add-form" method="post">
+    图书名字：<input class="easyui-textbox" name="bookname"  style="width:200px"><br>
+ 图书类型：<select name="booktype" class="easyui-combobox" style="width:200px;">
+    <option  value="-1">请选择</option>
+    <option  value="1">言情</option>
+    <option  value="2">动作</option>
+    <option   value="3">穿越</option>
+</select><br>
+
+    图书价格：<input  class="easyui-textbox" name="bookprice"  style="width:200px"><br>
+    <!--  出版日期：<input th:value="${book.bookdate}"  id="ds" name="bookdate" type= "text" />-->
+
+</form>
+
+<!--<script type="text/javascript">
+    $(function(){
+        $('#ds').datebox({
+        });
+
+    })
+</script>-->
+</body>
+</html>

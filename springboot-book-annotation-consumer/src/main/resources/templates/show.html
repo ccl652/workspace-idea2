@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入EasyUI的样式文件-->
+    <link rel="stylesheet" href="../js/easyui/themes/default/easyui.css" type="text/css"/>
+    <!-- 引入EasyUI的图标样式文件-->
+    <link rel="stylesheet"href="../js/easyui/themes/icon.css" type="text/css"/>
+    <!-- 引入JQuery -->
+    <script type="text/javascript" src="../js/easyui/jquery.min.js"></script>
+    <!-- 引入EasyUI -->
+    <script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+    <!-- 引入EasyUI的中文国际化js，让EasyUI支持中文 -->
+    <script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <!-- 引入EasyUI的生成树的插件 -->
+    <script type="text/javascript" src="../js/easyui/util-js.js"></script>
+    <!-- 引入uploadify的css、js文件 -->
+    <link rel="stylesheet" href="../js/uploadify/uploadify.css">
+    <script type="text/javascript" src="../js/uploadify/jquery.uploadify.min.js"></script>
+
+</head>
+<body>
+
+<form action="../importFile" method="post" enctype="multipart/form-data">
+    <input type="file" name="file"><br><br>
+    <input type="submit" value="导入" >
+</form>
+<br>
+<input type="checkbox" name="ck" class="combobox-checkbox" value="图书编号">图书编号<br>
+<input type="checkbox" name="ck" class="combobox-checkbox" value="图书名称">图书名称<br>
+<input type="checkbox" name="ck" class="combobox-checkbox" value="图书价格">图书价格<br>
+<input type="checkbox" name="ck" class="combobox-checkbox" value="图书类型">图书类型<br>
+<input type="checkbox" name="ck" class="combobox-checkbox" value="出版日期">出版日期<br>
+<input type="button" onclick="exportFile()"  value="导出">
+
+<!--<input type="button" onclick="javascrtpt:window.location.href='../exportFile'"  value="导出"><br><br>-->
+
+
+<table id="search-tab"></table>
+<div id="add-div"></div>
+
+<script type="text/javascript">
+    
+    function exportFile() {
+        var ids = $('input[type=checkbox]');
+        var data = '图书编号,';
+        ids.each(function () {
+            //获取当前元素的勾选状态
+            if ($(this).prop("checked")) {
+                data = data + $(this).val() + ",";
+            }
+        });
+        //去最后的点
+        data = data.substring(0, data.length - 1);
+        //弹出结果
+        //alert(data);
+        if(data=='图书编号'){
+             data += ",图书名称,图书价格,图书类型,出版日期";
+        }
+        //alert(2+"="+data);
+        location.href="../exportFile?rowName="+data;
+    }
+
+    function searchBook(){
+        $('#search-tab').datagrid({
+            url:'../queryBook',
+            rownumbers:true,
+            columns:[
+                [
+                    {field:'bookid',title:'图书编号',width:100},
+                    {field:'bookname',title:'图书名称',width:100},
+                    {field:'bookprice',title:'图书价格',width:100},
+                    {field:'booktype',title:'图书类型',width:100,
+                        formatter:function(val,row,index){
+                            if(val==1){
+                                return "言情";
+                            }
+                            if(val==2){
+                                return "动作";
+                            }
+                            if(val==3){
+                                return "穿越";
+                            }
+                        }
+                    },
+                  {field:'booktime',title:'出版日期',width:100,
+                       formatter:function(val,row,index){
+                           var date =new Date(val);
+                           var tol=date.toLocaleDateString(date);
+                           return tol;
+                       }
+                   },
+                    {field:'action',
+                        formatter:function(val,row,index){
+                            var but = "<input type='button' onclick='toEditBook("+row.bookid+")' value='修改'>";
+                            return but;
+                        }
+                    }
+                ]
+            ],
+            toolbar: [{
+                text:'添加',
+                iconCls: 'icon-add',
+                handler: function(){
+                    addBook();
+                }
+            },'-',{
+                text:'批量删除',
+                iconCls: 'icon-remove',
+                handler: function(){
+                    deleteBooks();
+                }
+            }]
+
+        });
+    }
+
+    $(function(){
+        searchBook();
+    })
+
+    function addBook() {
+        $('#add-div').dialog({
+            title: '新增图书',
+            width: 400,
+            height: 400,
+            href: '../toAdd',
+            modal: true,
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    $('#add-form').form('submit', {
+                        url:"../saveBook",
+                        onSubmit: function(){
+                        },
+                        success:function(data){
+                            if(data>0){
+                                $('#search-tab').datagrid("reload");
+                                $('#add-div').dialog("close");
+                            }
+                        }
+                    });
+                }
+            },{
+                text:'关闭',
+                handler:function(){
+                    $('#add-div').dialog("close");
+                }
+            }]
+        });
+    }
+
+    function deleteBooks() {
+        var arr = $('#search-tab').datagrid('getSelections');
+        var ids = "";
+        for(var i=0; i<arr.length; i++){
+            ids += ","+arr[i].bookid;
+
+        }
+        ids = ids.substring(1);
+
+        $.ajax({
+            url:"../deleteBooks?ids="+ids,
+            type:"post",
+            success:function(msg){
+                if(msg>0){
+                    $.messager.confirm('确认','您确认想要删除记录吗？',function(r){
+                        if (r){
+                            alert('确认删除');
+                            $('#search-tab').datagrid("load");
+                        }
+                    });
+                }
+            }
+        })
+    }
+    
+    function toEditBook(id) {
+        $('#add-div').dialog({
+            title: '修改图书信息',
+            width: 400,
+            height: 400,
+            href: '../toEdit?id='+id,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    $('#edit-form').form('submit', {
+                        url:"../updateBook",
+                        onSubmit: function(){
+                        },
+                        success:function(data){
+                            if(data>0){
+                                $('#search-tab').datagrid("reload");
+                                $('#add-div').dialog("close");
+                            }
+                        }
+                    });
+                }
+            },{
+                text:'关闭',
+                handler:function(){
+                    $('#add-div').dialog("close");
+                }
+            }]
+        });
+    }
+
+</script>
+</body>
+</html>

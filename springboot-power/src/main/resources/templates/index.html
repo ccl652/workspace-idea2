@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入EasyUI的样式文件-->
+    <link rel="stylesheet" href="../js/easyui/themes/default/easyui.css" type="text/css"/>
+    <!-- 引入EasyUI的图标样式文件-->
+    <link rel="stylesheet"href="../js/easyui/themes/icon.css" type="text/css"/>
+    <!-- 引入JQuery -->
+    <script type="text/javascript" src="../js/easyui/jquery.min.js"></script>
+    <!-- 引入EasyUI -->
+    <script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+    <!-- 引入EasyUI的中文国际化js，让EasyUI支持中文 -->
+    <script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <!-- 引入EasyUI的生成树的插件 -->
+    <script type="text/javascript" src="../js/easyui/util-js.js"></script>
+    <!-- 引入uploadify的css、js文件 -->
+    <link rel="stylesheet" href="../js/uploadify/uploadify.css">
+    <script type="text/javascript" src="../js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+
+
+<div id="cc" class="easyui-layout" fit=true>
+    <div data-options="region:'north',collapsible:false" style="height:100px;">
+        <div id="weather"></div>
+    </div>
+    <div data-options="region:'west',title:'导航菜单',collapsible:false" style="width:200px;">
+        <ul id="tree-ul"></ul>
+    </div>
+    <div data-options="region:'center'" style="padding:5px;background:#eee;">
+        <div id="tabs-div" class="easyui-tabs"  fit=true>
+            <div title="欢迎使用" style="padding:20px;display:none;">
+                tab1
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function(){
+        $("#tree-ul").tree({
+            url:"../queryUserPowerTree",
+            //节点的点击事件，node代表当前点击的节点对象
+            onClick: function(node){
+                //alert(node.text);  // 在用户点击的时候提示
+                if(node.url != ""){
+// 				点击树节点时，添加选项卡的标签页   涉及到tabs组件的三个方法：exists、select、add
+// 				判断该标签页是否已经存在_使用exists方法 根据标题进行判断
+                    if($("#tabs-div").tabs("exists",node.text)){
+// 					如果已经存在————选中该标签页——————使用select方法 根据标题选中
+                        $("#tabs-div").tabs("select",node.text)
+                    }else{
+//	 				没有存在时——添加该标签页
+                        $("#tabs-div").tabs("add",{
+                            closable:true,
+                            title:node.text,
+                            href:"/"+node.url
+                        })
+                    }
+                }
+
+            }
+        })
+    })
+
+
+
+</script>
+</body>
+</html>

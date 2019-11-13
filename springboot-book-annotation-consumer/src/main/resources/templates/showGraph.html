@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 这是jquery的核心包  -->
+    <script type="text/javascript" src="../js/easyui/jquery.min.js"></script>
+    <script src="../highcharts/code/highcharts.js"></script>
+    <script src="../highcharts/code/modules/exporting.js"></script>
+    <script src="../highcharts/code/modules/export-data.js"></script>
+</head>
+<body>
+
+<div id="container2"></div>
+<div id="container3"></div>
+<div id="container6"></div>
+<script>
+
+    $(function(){
+        var chart = Highcharts.chart('container6', {
+            title: {
+                text: '2010 ~ 2016 年太阳能行业就业人员发展情况'
+            },
+            subtitle: {
+                text: '数据来源：thesolarfoundation.com'
+            },
+            yAxis: {
+                title: {
+                    text: '就业人数'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+            plotOptions: {
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                    pointStart: 2010
+                }
+            },
+            series: [{
+                name: '安装，实施人员',
+                data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+            }, {
+                name: '工人',
+                data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+            }, {
+                name: '销售',
+                data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+            }, {
+                name: '项目开发',
+                data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+            }, {
+                name: '其他',
+                data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+        });
+
+    })
+
+/*
+
+    $(function(){
+        function create() {
+            var series = new Array();
+            $.ajax({
+                type: "POST",
+                url: "../queryBookGraph",
+                async: false, //表示同步，如果要得到ajax处理完后台数据后的返回值，最好这样设置
+                success: function(result){
+
+                    var ccc = result.key;
+                    alert(ccc);
+                    var size = ccc.length;
+                    for(var i=0; i<size; i++) {
+                        var name = ccc[i].yyyy;
+                        var perTotalCnt = ccc[i].xxxx;
+                        var data = function() {
+                            var data = [],
+                                time = result.time,
+                                i;
+                            for(i=-6; i<=0; i++) {
+                                data.push({
+                                    x: aaaa,
+                                    y: zzzz
+                                });
+                            }
+
+                            return data;
+                        }();
+                        series.push({"name": name, "data": data});
+                    }
+                }
+            });
+            alert(series);
+            return series;
+
+        }
+
+
+
+        $(document).ready(function() {
+
+            var chart = Highcharts.chart('container2', {
+                title: {
+                    text: '每月书籍销售情况'
+                },
+                yAxis: {
+                    title: {
+                        text: '销售情况'
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010
+                    }
+                },
+                series: create(),
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+            });
+        });
+    });
+
+*/
+
+
+/*
+
+     $(function () {
+         alert("0")
+         $.ajax({
+             url:"../queryBookGraph",
+             type:"post",
+             dataType:"json",
+             success:function (data) {
+                 alert(data.length)
+
+                 var xtext = [];//X轴TEXT
+                 var nums = [];//y轴数量
+                 for (var i=0;i<data.length;i++){
+                   //  alert(data[i].name+"=");
+                   //  alert(data[i].data+"+");
+
+                     nums.push(data[i].name);
+                     xtext.push(data[i].data);
+                 }
+                 var chart = Highcharts.chart('container2', {
+                     title: {
+                         text: '每月书籍销售情况'
+                     },
+                     yAxis: {
+                         title: {
+                             text: '销售情况'
+                         }
+                     },
+                     legend: {
+                         layout: 'vertical',
+                         align: 'right',
+                         verticalAlign: 'middle'
+                     },
+                     plotOptions: {
+                         series: {
+                             label: {
+                                 connectorAllowed: false
+                             },
+                             pointStart: 2010
+                         }
+                     },
+                     series:[{
+                         name:"数据",
+                         data:data
+                     }],
+                     responsive: {
+                         rules: [{
+                             condition: {
+                                 maxWidth: 500
+                             },
+                             chartOptions: {
+                                 legend: {
+                                     layout: 'horizontal',
+                                     align: 'center',
+                                     verticalAlign: 'bottom'
+                                 }
+                             }
+                         }]
+                     }
+                 });
+                readLine(xtext,nums);
+             }
+         })
+
+     })
+*/
+/*
+    $(function () {
+        alert("0")
+        $.ajax({
+            url:"../queryBookGraphByWeek",
+            type:"post",
+            dataType:"json",
+            success:function (data) {
+                alert(data.length)
+
+                var xtext = [];//X轴TEXT
+                var nums = [];//y轴数量
+                for (var i=0;i<data.length;i++){
+                   // alert(data[i].count+"=");
+                   // alert(data[i].time+"+");
+
+                    nums.push(data[i].count);
+                    xtext.push(data[i].time);
+                }
+                var chart = Highcharts.chart('container3', {
+                    title: {
+                        text: '每月书籍销售情况'
+                    },
+                    yAxis: {
+                        title: {
+                            text: '销售情况'
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle'
+                    },
+                    plotOptions: {
+                        series: {
+                            label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 2010
+                        }
+                    },
+                    series:[{
+                        name:"数据",
+                        data:nums
+                    }],
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom'
+                                }
+                            }
+                        }]
+                    }
+                });
+            }
+        })
+        readLine(xtext,nums);
+    })*/
+</script>
+</body>
+</html>
